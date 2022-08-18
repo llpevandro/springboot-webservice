@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.projeto.webservice.entities.Users;
 import com.projeto.webservice.repositories.UsersRepository;
+import com.projeto.webservice.services.exceptions.DatabaseException;
 import com.projeto.webservice.services.exceptions.ResourceNotFoundException;
 
 @Service // @Component e @Service REGISTRA COMO COMPONENTE DO FRAMEWORK SPRING
@@ -31,7 +34,15 @@ public class UsersService {
 	}
 	
 	public void delete(Long id) {
+		try {
 		repository.deleteById(id);
+		}
+		catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException (id);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DatabaseException (e.getMessage());
+		}
 	}
 	
 	public Users update(Long id, Users obj) {		
