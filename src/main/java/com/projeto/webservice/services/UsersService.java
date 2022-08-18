@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.projeto.webservice.entities.Users;
 import com.projeto.webservice.repositories.UsersRepository;
+import com.projeto.webservice.services.exceptions.ResourceNotFoundException;
 
 @Service // @Component e @Service REGISTRA COMO COMPONENTE DO FRAMEWORK SPRING
 public class UsersService {
@@ -22,7 +23,7 @@ public class UsersService {
 	public Users findById(Long id) {
 		
 		Optional <Users> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public Users insert(Users obj) {
