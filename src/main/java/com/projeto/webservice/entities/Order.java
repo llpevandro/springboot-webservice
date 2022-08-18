@@ -19,10 +19,10 @@ public class Order implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id;	
 	private Instant moment;
 	
-	//Orders associação MUITOS para UM cliente
+	//Orders associação MUITOS para UM cliente	
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Users client;
